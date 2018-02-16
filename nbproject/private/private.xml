@@ -5,8 +5,11 @@
         <group>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Model/User.java</file>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Controller/InsiderServlet.java</file>
+            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/css/website.css</file>
+            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/footer.jsp</file>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/registrationForm.jsp</file>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/index.html</file>
+            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/header.jsp</file>
         </group>
     </open-files>
 </project-private>

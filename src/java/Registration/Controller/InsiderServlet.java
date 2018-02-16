@@ -6,8 +6,14 @@
 package Registration.Controller;
 
 import Registration.Model.User;
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +27,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "InsiderServlet", urlPatterns = {"/registration"})
 public class InsiderServlet extends HttpServlet {
+    private String dbURL = "jdbc:mysql://localhost:3306/twitchandyoutube";
+    private String dbUser = "root";
+    private String dbPass = "";
+    Connection conn = null; // connection to the database
+    String message = null;  // message will be sent back to client
+    ArrayList<User> userList = new ArrayList();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,9 +64,43 @@ public class InsiderServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // connects to the database
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+
+            // constructs SQL statement
+            String sql = "SELECT * FROM users";
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            // sends the statement to the database server
+            ResultSet result = statement.executeQuery();
+            userList = new ArrayList();
+            while (result.next()) {
+                String firstName = result.getString("FIRST_NAME");
+                String lastName = result.getString("LAST_NAME");
+                int age = result.getInt("AGE");
+                String email = result.getString("EMAIL");
+
+                User user = new User(firstName, lastName, email, age);
+                userList.add(user);
+            }
+        } catch (SQLException ex) {
+            message = "ERROR: " + ex.getMessage();
+            ex.printStackTrace();
+        } finally {
+            if (conn != null) {
+                // closes the database connection
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            request.setAttribute("usersFromDB", userList);
+            processRequest(request, response);
+        }
     }
 
     /**
@@ -65,6 +111,10 @@ public class InsiderServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    // database connection settings
+    
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,21 +124,42 @@ public class InsiderServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         int age = Integer.parseInt(request.getParameter("age"));
         String email = request.getParameter("email");
-        
-//        String htmlResponse = "<html>";
-//        htmlResponse += "<h2>Your name is: " + firstName + " " + lastName + "</h2>";
-//        htmlResponse += "</html>";
-        
-        //String fullName = firstName + lastName;
-        User usr = new User(firstName, lastName, email, age);
-        request.setAttribute("userdata", usr);
-        RequestDispatcher rd = request.getRequestDispatcher("/registrationForm.jsp");
-        rd.forward(request, response);
-
-        //writer.println(htmlResponse);
-        
-        
-        //processRequest(request, response);
+         
+        try {
+            // connects to the database
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+ 
+            // constructs SQL statement
+            String sql = "INSERT INTO users (user_id, first_name, last_name, age, email) values (null, ?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setInt(3, age);
+            statement.setString(4, email);
+ 
+            // sends the statement to the database server
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                message = "De user is toegevoegd aan de database!";
+            }
+        } catch (SQLException ex) {
+            message = "ERROR: " + ex.getMessage();
+            ex.printStackTrace();
+        } finally {
+            if (conn != null) {
+                // closes the database connection
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            User usr = new User(firstName, lastName, email, age);
+            request.setAttribute("userdata", usr);
+            request.setAttribute("Message", message);
+            processRequest(request, response);
+        }
     }
 
     /**

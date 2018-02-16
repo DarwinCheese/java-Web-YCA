@@ -4,94 +4,107 @@
     Author     : Laptop10
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="Registration.Controller.*" %>
 <%@page import="Registration.Model.*" %>
 <% User usr = (User) request.getAttribute("userdata"); %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Registration Form!</h1>
-        <div>
-            <table>
-                <form name="RegistrationForm" action="/TwitchAndYoutube/registration" method="POST">
-                    <tr>
-                        <td>
-                            First Name:
-                        </td>
-                        <td>
-                            <input type="text" name="firstName" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Last Name:
-                        </td>
-                        <td>
-                            <input type="text" name="lastName" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Age:
-                        </td>
-                        <td>
-                            <input type="text" name="age" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            E-Mail:
-                        </td>
-                        <td>
-                            <input type="text" name="email" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="submit" name="submit" value="Verzenden">
-                        </td>
-                    </tr>
-                </form>
-            </table>
-            
-            <table>
-                <% if (usr != null) { %>
+<% ArrayList<User> userList = (ArrayList) request.getAttribute("usersFromDB"); %>
+
+<jsp:include page="header.jsp" />
+<h1>Registration Form!</h1>
+<div class="registration">
+    <table >
+        <form name="RegistrationForm" action="/TwitchAndYoutube/registration" method="POST">
+            <tr>
+                <td>
+                    Voornaam:
+                </td>
+                <td>
+                    <input type="text" name="firstName" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Achternaam:
+                </td>
+                <td>
+                    <input type="text" name="lastName" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Leeftijd:
+                </td>
+                <td>
+                    <input type="text" name="age" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    E-Mail:
+                </td>
+                <td>
+                    <input type="text" name="email" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" name="submit" value="Verzenden" class="btn btn-primary">
+                </td>
+            </tr>
+        </form>
+    </table>
+    <h3>
+        <% 
+            if(request.getAttribute("Message") != null) { 
+                out.print(request.getAttribute("Message"));
+        }%>
+    </h3>
+</div>
+
+<div class="userList">
+    <% if (userList.size() <= 0) { %>
+        <h1>
+            Er zijn nog geen users!
+        </h1>
+    <% } else { %>
+        <table class="table table-hover table-sm">
+            <caption>Lijst met aangemelde gebruikers</caption>
+            <thead>
                 <tr>
-                    <td>
-                        Jouw naam is: 
-                    </td>
-                    <td>
-                        <% out.print(usr.getFirstName()); %> <% out.print(usr.getLastName());%>
-                    </td>  
+                    <th scope="col">
+                        Voornaam
+                    </th>
+                    <th scope="col">
+                        Achternaam
+                    </th>
+                    <th scope="col">
+                        Leeftijd
+                    </th>
+                    <th scope="col">
+                        E-mail
+                    </th>
                 </tr>
-                <tr>
-                    <td>
-                        Jouw email is:
-                    </td>
-                    <td>
-                        <% out.print(usr.getEmail()); %>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Jouw leeftijd is: 
-                    </td>
-                    <td>
-                        <% out.print(usr.getAge()); %>
-                    </td>
-                </tr>
-                    
-                <% } else { %>
-                <h1>
-                    Er zijn nog geen users!
-                </h1>
+            </thead>
+            <tbody>
+                <% for(int i = 0; i < userList.size(); i++) { %>
+                    <tr>
+                        <td>
+                            <%=userList.get(i).getFirstName() %> 
+                        </td>
+                        <td>
+                            <%=userList.get(i).getLastName() %> 
+                        </td>  
+                        <td>
+                            <%=userList.get(i).getAge() %> 
+                        </td>
+                        <td>
+                            <%=userList.get(i).getEmail() %> 
+                        </td>
+                    </tr>
                 <% } %>
-            </table>
-        </div>
-    </body>
-</html>
+            </tbody>
+        </table>
+    <% } %>
+</div>
+<jsp:include page="footer.jsp" />
