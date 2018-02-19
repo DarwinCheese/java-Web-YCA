@@ -14,7 +14,7 @@
 <h1>Registration Form!</h1>
 <div class="registration">
     <table >
-        <form name="RegistrationForm" action="/TwitchAndYoutube/PostServlet" method="POST">
+        <form name="RegistrationForm" action="/java-Web-YCA/PostServlet" method="POST">
             <tr>
                 <td>
                     Voornaam:
