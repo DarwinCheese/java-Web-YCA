@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Model/User.java</file>
+            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Controller/PostServlet.java</file>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Controller/InsiderServlet.java</file>
-            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/css/website.css</file>
-            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/footer.jsp</file>
             <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/registrationForm.jsp</file>
-            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/index.html</file>
-            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/web/header.jsp</file>
+            <file>file:/C:/dev/Netbeansprojects/TwitchAndYoutube/src/java/Registration/Controller/GetServlet.java</file>
         </group>
     </open-files>
 </project-private>
