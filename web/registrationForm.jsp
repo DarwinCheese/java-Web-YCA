@@ -7,14 +7,14 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="Registration.Controller.*" %>
 <%@page import="Registration.Model.*" %>
-<% User usr = (User) request.getAttribute("userdata"); %>
+
 <% ArrayList<User> userList = (ArrayList) request.getAttribute("usersFromDB"); %>
 
 <jsp:include page="header.jsp" />
 <h1>Registration Form!</h1>
 <div class="registration">
     <table >
-        <form name="RegistrationForm" action="/TwitchAndYoutube/registration" method="POST">
+        <form name="RegistrationForm" action="/TwitchAndYoutube/PostServlet" method="POST">
             <tr>
                 <td>
                     Voornaam:
@@ -44,7 +44,7 @@
                     E-Mail:
                 </td>
                 <td>
-                    <input type="text" name="email" required>
+                    <input type="email" name="email" required>
                 </td>
             </tr>
             <tr>
@@ -54,12 +54,6 @@
             </tr>
         </form>
     </table>
-    <h3>
-        <% 
-            if(request.getAttribute("Message") != null) { 
-                out.print(request.getAttribute("Message"));
-        }%>
-    </h3>
 </div>
 
 <div class="userList">

@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Laptop10
  */
-@WebServlet(name = "InsiderServlet", urlPatterns = {"/registrationnnn"})
-public class InsiderServlet extends HttpServlet {
+@WebServlet(name = "GetServlet", urlPatterns = {"/registration"})
+public class GetServlet extends HttpServlet {
     private String dbURL = "jdbc:mysql://localhost:3306/twitchandyoutube";
     private String dbUser = "root";
     private String dbPass = "";
@@ -45,24 +45,8 @@ public class InsiderServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-            /* TODO output your page here. You may use following sample code. */
-            RequestDispatcher rd = request.getRequestDispatcher("registrationForm.jsp");
-            rd.forward(request, response);
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+        
+            try {
             // connects to the database
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
             conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
@@ -96,8 +80,24 @@ public class InsiderServlet extends HttpServlet {
                 }
             }
             request.setAttribute("usersFromDB", userList);
-            processRequest(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("registrationForm.jsp");
+            rd.forward(request, response);
         }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
@@ -108,55 +108,10 @@ public class InsiderServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    // database connection settings
-    
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        PrintWriter writer = response.getWriter();
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        int age = Integer.parseInt(request.getParameter("age"));
-        String email = request.getParameter("email");
-         
-        try {
-            // connects to the database
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
- 
-            // constructs SQL statement
-            String sql = "INSERT INTO users (user_id, first_name, last_name, age, email) values (null, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, firstName);
-            statement.setString(2, lastName);
-            statement.setInt(3, age);
-            statement.setString(4, email);
- 
-            // sends the statement to the database server
-            int row = statement.executeUpdate();
-            if (row > 0) {
-                message = "De user is toegevoegd aan de database!";
-            }
-        } catch (SQLException ex) {
-            message = "ERROR: " + ex.getMessage();
-            ex.printStackTrace();
-        } finally {
-            if (conn != null) {
-                // closes the database connection
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            User usr = new User(firstName, lastName, email, age);
-            request.setAttribute("userdata", usr);
-            request.setAttribute("Message", message);
-            processRequest(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
