@@ -8,3 +8,39 @@ and open the template in the editor.
     Author     : Laptop10
 */
 
+body {
+    background-image: url("../media/crisp_paper_ruffles.png")
+}
+body.white-bg{
+    background-image: none;
+    background-color:white;
+}
+#wrapper{
+    width: 100%;
+    max-width: none;
+}
+footer {
+    color:#fff;
+}
+.logos {
+    justify-content: center;
+    display: flex;
+}
+figure img {
+    width:350px;
+}
+.logos figure img{
+    width:300px;
+}       
+article header{
+    font-weight:600;
+}
+article {
+    min-height:500px;
+}
+.youtubers figure{
+    float:left;
+}
+.youtubers video{
+    margin-left:10px;
+}
